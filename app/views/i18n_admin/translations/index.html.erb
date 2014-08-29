@@ -1,0 +1,69 @@
+<script type="text/x-handlebars">
+  <header class="navbar main-navbar navbar-fixed-top navbar-inverse" id="top" role="banner">
+    <div class="container">
+      <div class="navbar-header">
+        <a href="javascript:history.back()" class="navbar-toggle pull-left btn-back">
+          <i class="glyphicon glyphicon-chevron-left"></i>
+        </a>
+        <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target=".main-nav">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a href="../" class="navbar-brand">Translations</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="container main-container">
+    {{outlet}}
+  </div>
+</script>
+
+
+<script type="text/x-handlebars" data-template-name="translations">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h2>
+        Translations
+      </h2>
+    </div>
+
+    <div class="panel-body">
+      <table class="table">
+        <thead>
+          <tr>
+            <th width="30%">Key</th>
+            <th width="70%">Translation</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each}}
+            <tr>
+              <td>{{key}}</td>
+              <td>
+                {{input value=value
+                        class="form-control"
+                        focus-out="update"
+                }}
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+
+      <ul class="pagination">
+        <li class="disabled"><a href="#">&laquo;</a></li>
+
+        {{#each pages}}
+          <li {{bind-attr class="active"}}>
+            <a href="#" {{action 'changePage' number}}>{{number}}</a>
+          </li>
+        {{/each}}
+
+        <li class="disabled"><a href="#">&raquo;</a></li>
+      </ul>
+    </div>
+  </div>
+</script>
