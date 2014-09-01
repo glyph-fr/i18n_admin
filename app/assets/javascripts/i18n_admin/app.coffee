@@ -1,9 +1,15 @@
-App = Ember.Application.create
+Ember.RSVP.on 'error', (error) ->
+  console.assert(false, error)
+  console.error(error.stack) if (error && error.stack)
+
+
+window.App = Ember.Application.create
   LOG_TRANSITIONS: true
   rootElement: 'body'
 
 I18n = {
   locale: $('html').attr('lang')
+  defaultLocale: $('html').data('default-locale')
   availableLocales: $('html').data('avaliable-locales')
 }
 
@@ -15,6 +21,8 @@ defaultRequestOptions = ->
     defaultOptions[csrfParam] = csrfToken
     defaultOptions
   )()
+
+  $.extend({}, @defaultOptions, locale: I18n.locale)
 
 $.requestBackend = (path, options = {}) ->
   $.ajax
@@ -51,9 +59,13 @@ App.TranslationsRoute = Ember.Route.extend
       @loadPage(number)
 
     changeLocale: (locale) ->
-      console.log "CHANGE LOCALE", locale
       I18n.locale = locale.value
+      @set('controller.currentLocale', locale.value)
       @loadPage(@get('controller.currentPage'))
+
+    search: ->
+      @set('controller.currentPage', 1)
+      @loadPage(1)
 
   model: ->
     page = @get('controller.currentPage') or 1
@@ -61,11 +73,22 @@ App.TranslationsRoute = Ember.Route.extend
     Ember.A()
 
   loadPage: (page) ->
-    options = { page: page, locale: I18n.locale }
+    options = { page: page }
+
+    if (searchTerms = @get('controller.searchTerms'))
+      $.extend(options, q: searchTerms)
+
+    if (controller = @get('controller'))
+      controller.set('isLoading', true)
+
     $.requestBackend('./translations', data: options).then (data) =>
       controller = @get('controller')
       controller.clear()
 
+      controller.set('isLoading', false)
+
+      controller.set('per', data.meta.per)
+      controller.set('totalCount', data.meta.count)
       @calculatePagesTotal(data.meta)
 
       data.translations.forEach (translationData) =>
@@ -73,6 +96,7 @@ App.TranslationsRoute = Ember.Route.extend
         controller.pushObject(translation)
 
   setupController: (controller, model) ->
+    controller.set('isLoading', true)
     controller.set('locale', $('html').attr('lang'))
     controller.set('currentPage', 1)
     controller.set('pagesTotal', 1)
@@ -89,10 +113,14 @@ App.TranslationsRoute = Ember.Route.extend
 #################################
 
 App.TranslationsController = Ember.ArrayController.extend
+  isLoading: false
   itemController: 'translation'
   locale: null
-  pagesTotal: 1
-  currentPage: 1
+  pagesTotal: 0
+  currentPage: 0
+  totalCount: 0
+  per: 0
+  searchTerms: ''
 
   pages: (->
     [1..@get('pagesTotal')].map (pageNumber) =>
@@ -102,8 +130,16 @@ App.TranslationsController = Ember.ArrayController.extend
   ).property('pagesTotal', 'currentPage')
 
   locales: (->
-    I18n.availableLocales.map (locale) ->
-      Ember.Object.create(name: locale, value: locale)
+    I18n.availableLocales.map (locale) =>
+      Ember.Object.create(
+        name: locale
+        value: locale
+        isCurrentLocale: locale is (@get('currentLocale') or I18n.locale)
+      )
+  ).property('currentLocale')
+
+  defaultLocale: (->
+    I18n.defaultLocale
   ).property()
 
 App.TranslationController = Ember.ObjectController.extend
@@ -121,6 +157,18 @@ App.TranslationController = Ember.ObjectController.extend
 
 #################################
 #
+#          Views
+#
+#################################
+
+App.AutoGrowTextArea = Ember.TextArea.extend
+  didInsertElement: ->
+    console.log 'autoGrow', @$()
+    @$().autoGrow()
+
+
+#################################
+#
 #          Models
 #
 #################################
@@ -130,3 +178,5 @@ App.Translation = Ember.Object.extend
     { key: @get('key'), value: @get('value') }
 
 App.Page = Ember.Object.extend({})
+
+App.Locale = Ember.Object.extend({})

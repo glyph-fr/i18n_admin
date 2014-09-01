@@ -15,6 +15,18 @@
  *= require_self
  */
 
+body {
+  overflow: scroll;
+}
+
 .main-container {
   margin-top: 70px;
+}
+
+.pagination {
+  margin-top: 0;
+}
+
+.translation-input {
+  min-width: 400px;
 }

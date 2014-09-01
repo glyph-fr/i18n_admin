@@ -1,17 +1,31 @@
 module I18nAdmin
   class Translations
+    include I18nAdmin::RequestStore
+
     def self.for_locale(locale)
       new.for_locale(locale.to_sym)
     end
 
     def self.as_json_for_locale(locale)
       for_locale(locale).map do |key, value|
-        { key: key, value: value }
+        {
+          key: key,
+          value: value,
+          original: for_locale(I18n.default_locale)[key],
+          locale: locale
+        }
       end
     end
 
     def self.update(locale, hash)
       I18n.backend.store_translations(locale, { hash[:key] => hash[:value] })
+    end
+
+    def self.search(terms, as_json_hash)
+      rx = /#{ terms.split(' ').join('|') }/i
+      as_json_hash.select do |hash|
+        hash.any? { |key, value| value.to_s.match(rx) }
+      end
     end
 
     def for_locale(locale = I18n.locale)
@@ -23,8 +37,7 @@ module I18nAdmin
     end
 
     def all_translations_for(locale)
-      @all_translations ||= {}
-      @all_translations[locale] ||= backends.map do |backend|
+      request_store.store[store_key_for(locale, :hash)] ||= backends.map do |backend|
         translations_for(locale, backend)
       end.reduce(&:reverse_merge)
     end

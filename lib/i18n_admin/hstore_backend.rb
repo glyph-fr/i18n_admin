@@ -3,6 +3,8 @@ require 'i18n/backend/key_value'
 module I18nAdmin
   class HstoreBackend < I18n::Backend::KeyValue
     class Store
+      include I18nAdmin::RequestStore
+
       def [](path)
         locale, key = locale_and_key_from(path)
         cached_translations_for(locale).translations[key]
@@ -33,16 +35,12 @@ module I18nAdmin
       end
 
       def cached_translations_for(locale)
-        store_key = store_key_for(locale)
-        RequestStore.store[store_key] ||= translations_set_for(locale)
+        store_key = store_key_for(locale, :set)
+        request_store.store[store_key] ||= translations_set_for(locale)
       end
 
       def model
         @model ||= I18nAdmin::TranslationsSet
-      end
-
-      def store_key_for(locale)
-        :"i18n_admin:#{ locale }"
       end
     end
 

@@ -4,14 +4,20 @@ module I18nAdmin
       respond_to do |format|
         format.html
         format.json do
-          @translations = Kaminari.paginate_array(translations)
-          @translations = @translations.page(params[:page]).per(50)
+          fetch_translations
+
+          if params[:q]
+            @translations = I18nAdmin::Translations.search(params[:q], @translations)
+          end
+
+          @translations = Kaminari.paginate_array(@translations)
+          @translations = @translations.page(params[:page]).per(60)
 
           render json: {
             translations: @translations,
             meta: {
               count: @translations.total_count,
-              per: 50
+              per: 60
             }
           }
         end
@@ -32,7 +38,7 @@ module I18nAdmin
       params.require(:translation).permit(:key, :value)
     end
 
-    def translations
+    def fetch_translations
       @translations ||= I18nAdmin::Translations.as_json_for_locale(locale)
     end
 

@@ -13,4 +13,5 @@
 //= require jquery
 //= require handlebars
 //= require ember
+//= require jquery.autoGrow
 //= require ./app

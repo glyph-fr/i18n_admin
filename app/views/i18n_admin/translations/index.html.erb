@@ -28,44 +28,89 @@
       <h2>
         Translations
       </h2>
-      <div class="btn-group">
-        {{#each locale in locales}}
-          <button class="btn" type="button" {{action 'changeLocale' locale}}>
-            {{locale.name}}
-          </button>
-        {{/each}}
+
+      <div class="row">
+        <div class="col-md-6">
+          Choose locale to translate :
+
+          <div class="btn-group">
+            {{#each locale in locales}}
+              <button {{bind-attr class=":btn :btn-primary locale.isCurrentLocale:active"}} type="button" {{action 'changeLocale' locale}}>
+                {{locale.name}}
+              </button>
+            {{/each}}
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <form {{action 'search' on='submit'}}>
+            <div class="input-group">
+              <span class="input-group-addon">
+                <i class="glyphicon glyphicon-search"></i>
+              </span>
+              {{input value=searchTerms class="form-control"}}
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button" {{action 'search'}}>
+                  Search
+                </button>
+              </span>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
 
     <div class="panel-body">
-      <table class="table">
-        <thead>
-          <tr>
-            <th width="30%">Key</th>
-            <th width="70%">Translation</th>
-          </tr>
-        </thead>
-        <tbody>
-          {{#each}}
-            <tr>
-              <td>{{key}}</td>
-              <td>
-                {{input value=value
-                        class="form-control"
-                        focus-out="update"
-                }}
-              </td>
-            </tr>
-          {{/each}}
-        </tbody>
-      </table>
+      {{#if isLoading}}
+        <div class="well">
+          <i class="glyphicon glyphicon-time"></i>
+          Loading translations ...
+        </div>
+      {{else}}
+        {{partial 'pagination'}}
 
+        <table class="table">
+          <thead>
+            <tr>
+              <th width="20%">Key</th>
+              <th width="40%">Original ({{defaultLocale}})</th>
+              <th width="40%">Translation</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each}}
+              <tr>
+                <td width="20%" style="text-overflow:ellipsis;">{{key}}</td>
+                <td width="40%">{{original}}</td>
+                <td width="40%">
+                  {{view App.AutoGrowTextArea
+                          value=value
+                          class="form-control translation-input"
+                          focus-out="update"
+                  }}
+                </td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+
+        {{partial 'pagination'}}
+      {{/if}}
+    </div>
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="_pagination">
+  <div class="row pagination-container">
+    <div class="col-md-8">
       <ul class="pagination">
         <li class="disabled"><a href="#">&laquo;</a></li>
 
         {{#each pages}}
           <li {{bind-attr class="active"}}>
-            <a href="#" {{action 'changePage' number}}>{{number}}</a>
+            <a href="#" {{action 'changePage' number}}>
+              {{number}}
+            </a>
           </li>
         {{/each}}
 
