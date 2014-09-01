@@ -2,6 +2,11 @@ App = Ember.Application.create
   LOG_TRANSITIONS: true
   rootElement: 'body'
 
+I18n = {
+  locale: $('html').attr('lang')
+  availableLocales: $('html').data('avaliable-locales')
+}
+
 defaultRequestOptions = ->
   @defaultOptions ?= (->
     csrfParam = $('[name="csrf-param"]').attr('content')
@@ -42,9 +47,13 @@ App.Router.map ->
 App.TranslationsRoute = Ember.Route.extend
   actions:
     changePage: (number) ->
-      controller = @get('controller')
-      controller.set('currentPage', number)
+      @set('controller.currentPage', number)
       @loadPage(number)
+
+    changeLocale: (locale) ->
+      console.log "CHANGE LOCALE", locale
+      I18n.locale = locale.value
+      @loadPage(@get('controller.currentPage'))
 
   model: ->
     page = @get('controller.currentPage') or 1
@@ -52,7 +61,8 @@ App.TranslationsRoute = Ember.Route.extend
     Ember.A()
 
   loadPage: (page) ->
-    $.requestBackend('./translations', data: { page: page }).then (data) =>
+    options = { page: page, locale: I18n.locale }
+    $.requestBackend('./translations', data: options).then (data) =>
       controller = @get('controller')
       controller.clear()
 
@@ -63,6 +73,7 @@ App.TranslationsRoute = Ember.Route.extend
         controller.pushObject(translation)
 
   setupController: (controller, model) ->
+    controller.set('locale', $('html').attr('lang'))
     controller.set('currentPage', 1)
     controller.set('pagesTotal', 1)
     @_super(controller, model)
@@ -79,7 +90,7 @@ App.TranslationsRoute = Ember.Route.extend
 
 App.TranslationsController = Ember.ArrayController.extend
   itemController: 'translation'
-  locale: 'fr'
+  locale: null
   pagesTotal: 1
   currentPage: 1
 
@@ -89,6 +100,11 @@ App.TranslationsController = Ember.ArrayController.extend
         number: pageNumber,
         active: @get('currentPage') is pageNumber
   ).property('pagesTotal', 'currentPage')
+
+  locales: (->
+    I18n.availableLocales.map (locale) ->
+      Ember.Object.create(name: locale, value: locale)
+  ).property()
 
 App.TranslationController = Ember.ObjectController.extend
   actions:

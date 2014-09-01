@@ -1,5 +1,5 @@
 !!!
-%html
+%html{ lang: I18n.locale, data: { :'avaliable-locales' => I18n.available_locales.to_json } }
   %head
     %title Translations Admin
     = stylesheet_link_tag    "i18n_admin/application", media: "all"
