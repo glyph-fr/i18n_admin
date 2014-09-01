@@ -13,7 +13,6 @@ module I18nAdmin
         translations_set.translations[key] = value
         translations_set.translations_will_change!
         translations_set.save
-        @cached_translations_for[locale] = translations_set
         value
       end
 
@@ -34,12 +33,16 @@ module I18nAdmin
       end
 
       def cached_translations_for(locale)
-        @cached_translations_for ||= {}
-        @cached_translations_for[locale] ||= translations_set_for(locale)
+        store_key = store_key_for(locale)
+        RequestStore.store[store_key] ||= translations_set_for(locale)
       end
 
       def model
         @model ||= I18nAdmin::TranslationsSet
+      end
+
+      def store_key_for(locale)
+        :"i18n_admin:#{ locale }"
       end
     end
 

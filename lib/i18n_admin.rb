@@ -1,5 +1,6 @@
 require 'kaminari'
 require 'ember-rails'
+require 'request_store'
 
 require "i18n_admin/hstore_backend"
 require "i18n_admin/translations"
