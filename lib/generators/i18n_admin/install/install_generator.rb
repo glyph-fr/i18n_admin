@@ -20,5 +20,12 @@ module I18nAdmin
     def copy_initializer
       copy_file "initializer.rb", "config/initializers/i18n_admin.rb"
     end
+
+    def install_migrations
+      say "Installing migrations ..."
+      rake 'i18n_admin:install:migrations'
+      say "Migrations installed, don't forget to run `rake db:migrate` to " \
+          "make the translation system work"
+    end
   end
 end
