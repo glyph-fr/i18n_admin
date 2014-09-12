@@ -1,5 +1,5 @@
 <script type="text/x-handlebars">
-  <div class="container main-container">
+  <div class="container-fluid main-container">
     {{outlet}}
   </div>
 </script>
@@ -9,12 +9,12 @@
   <div class="panel panel-default">
     <div class="panel-heading">
       <h2>
-        Translations
+        {{t 'i18n_admin.translations.title'}}
       </h2>
 
       <div class="row">
         <div class="col-md-6">
-          Choose locale to translate :
+          {{t 'i18n_admin.translations.choose_locale'}}
 
           <div class="btn-group">
             {{#each locale in locales}}
@@ -34,7 +34,7 @@
               {{input value=searchTerms class="form-control"}}
               <span class="input-group-btn">
                 <button class="btn btn-default" type="button" {{action 'search'}}>
-                  Search
+                  {{t 'i18n_admin.translations.search'}}
                 </button>
               </span>
             </div>
@@ -47,7 +47,7 @@
       {{#if isLoading}}
         <div class="well">
           <i class="glyphicon glyphicon-time"></i>
-          Loading translations ...
+          {{t 'i18n_admin.translations.loading'}}
         </div>
       {{else}}
         {{partial 'pagination'}}
@@ -55,9 +55,9 @@
         <table class="table">
           <thead>
             <tr>
-              <th width="20%">Key</th>
-              <th width="40%">Original ({{defaultLocale}})</th>
-              <th width="40%">Translation</th>
+              <th width="20%">{{t 'i18n_admin.translation_set.key'}}</th>
+              <th width="40%">{{t 'i18n_admin.translation_set.original' localeBinding='defaultLocale'}}</th>
+              <th width="40%">{{t 'i18n_admin.translation_set.translation'}}</th>
             </tr>
           </thead>
           <tbody>

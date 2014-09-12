@@ -11,7 +11,7 @@ gem 'i18n_admin', github: 'glyph-fr/i18n_admin'
 ```
 
 Run the install generator which will mount the engine and create an initializer
-template to configure the gem :
+template to configure the gem, and create necessary migration :
 
 ```bash
 rails generate i18n_admin:install
@@ -26,6 +26,11 @@ I18nAdmin.config do |config|
   config.key_value_store = Redis.new
 end
 ```
+
+## Interface locale
+
+The locale is defined from the rails' `I18n.locale`, which is automatically
+added in the `<html>` tag `lang` attribute.
 
 ## Licence
 

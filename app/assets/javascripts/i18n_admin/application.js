@@ -14,4 +14,7 @@
 //= require handlebars
 //= require ember
 //= require jquery.autoGrow
+//= require cldr
+//= require ember-i18n
+//= require ./translations
 //= require ./app
