@@ -2,7 +2,7 @@ module I18nAdmin
   class Engine < ::Rails::Engine
     isolate_namespace I18nAdmin
 
-    initializer 'Configure I18n backend with the given key_value_store' do
+    initializer 'Configure I18n backend' do
       translations_installed = begin
         I18nAdmin::TranslationsSet.select('1').inspect
         true

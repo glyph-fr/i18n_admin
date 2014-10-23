@@ -7,14 +7,6 @@ I18nAdmin.config do |config|
   #
   # config.current_user_method = :current_user
 
-  # Define the Key Value store that will be used by the engine to store your
-  # translations
-  #
-  # For example, to use Redis :
-  #  config.key_value_store = Redis.new
-  #
-  # config.key_value_store = {}
-
   # Define a pattern that will exclude keys from the shown administrable
   # translations
   #
