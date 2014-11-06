@@ -55,7 +55,7 @@ module I18nAdmin
     end
 
     def parse_from_deep_hash(locale, translations)
-      flatten_translation_hash(translations[locale])
+      flatten_translation_hash(translations[locale] || {})
     end
 
     def flatten_translation_hash(hash, scope = nil, translations = {})
