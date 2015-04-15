@@ -10,7 +10,8 @@ module I18nAdmin
         false
       end
 
-      if translations_installed
+      table_existence = ActiveRecord::Base.connection.table_exists? 'i18n_admin_translations_sets'
+      if translations_installed && table_existence
         I18n.backend = I18n::Backend::Chain.new(
           I18nAdmin::HstoreBackend.new,
           I18n.backend
