@@ -1,0 +1,9 @@
+<tr class="translation-row" data-translation>
+  <td width="20%" class="translation-key-cell" title="<%= translation.key %>"><%= translation.key %></td>
+  <td width="40%"><%= translation.original %></td>
+  <td width="40%" class="input-cell">
+    <%= form_for(translation, remote: true, html: { data: { :'translation-form' => true } }) do |form| %>
+      <%= form.text_area :value, class: 'form-control translation-input', data: { :'translation-field' => true } %>
+    <% end %>
+  </td>
+</tr>

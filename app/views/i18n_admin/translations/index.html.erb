@@ -1,104 +1,74 @@
-<script type="text/x-handlebars">
-  <div class="container-fluid main-container">
-    {{outlet}}
-  </div>
-</script>
-
-
-<script type="text/x-handlebars" data-template-name="translations">
+<div class="container-fluid main-container">
   <div class="panel panel-default">
     <div class="panel-heading">
-      <h2>
-        {{t 'i18n_admin.translations.title'}}
-      </h2>
-
       <div class="row">
         <div class="col-md-6">
-          {{t 'i18n_admin.translations.choose_locale'}}
-
-          <div class="btn-group">
-            {{#each locale in locales}}
-              <button {{bind-attr class=":btn :btn-primary locale.isCurrentLocale:active"}} type="button" {{action 'changeLocale' locale}}>
-                {{locale.name}}
-              </button>
-            {{/each}}
-          </div>
+          <h1 class="panel-title">
+            <%= t('i18n_admin.translations.title') %>
+          </h1>
         </div>
 
         <div class="col-md-6">
-          <form {{action 'search' on='submit'}}>
+          <div class="pull-right">
+            <h2>
+              <%= t('i18n_admin.translations.choose_locale') %>
+            </h2>
+
+            <div class="btn-group">
+              <% @locales.each do |locale| %>
+                <%= link_to translations_path(locale: locale), class: "btn btn-primary#{ ' active' if current_locale == locale }" do %>
+                  <%= locale %>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-heading panel-subheading">
+      <div class="row">
+        <div class="col-md-6 pagination-column">
+          <%= render partial: 'pagination', locals: { translations: @translations } %>
+        </div>
+
+        <div class="col-md-6">
+          <%= form_tag translations_path(locale: current_locale) do %>
             <div class="input-group">
               <span class="input-group-addon">
                 <i class="glyphicon glyphicon-search"></i>
               </span>
-              {{input value=searchTerms class="form-control"}}
+
+              <%= text_field_tag :q, params[:q], class: 'form-control' %>
+
               <span class="input-group-btn">
-                <button class="btn btn-default" type="button" {{action 'search'}}>
-                  {{t 'i18n_admin.translations.search'}}
+                <button class="btn btn-default" type="submit">
+                  <%= t('i18n_admin.translations.search') %>
                 </button>
               </span>
             </div>
-          </form>
+          <% end %>
         </div>
       </div>
     </div>
 
     <div class="panel-body">
-      {{#if isLoading}}
-        <div class="well">
-          <i class="glyphicon glyphicon-time"></i>
-          {{t 'i18n_admin.translations.loading'}}
-        </div>
-      {{else}}
-        {{partial 'pagination'}}
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th width="20%"><%= t('i18n_admin.translation_set.key') %></th>
+            <th width="40%"><%= t('i18n_admin.translation_set.original', locale: I18n.default_locale) %></th>
+            <th width="40%"><%= t('i18n_admin.translation_set.translation') %></th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= render @translations  %>
+        </tbody>
+      </table>
+    </div>
 
-        <table class="table">
-          <thead>
-            <tr>
-              <th width="20%">{{t 'i18n_admin.translation_set.key'}}</th>
-              <th width="40%">{{t 'i18n_admin.translation_set.original' localeBinding='defaultLocale'}}</th>
-              <th width="40%">{{t 'i18n_admin.translation_set.translation'}}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {{#each}}
-              <tr>
-                <td width="20%" style="text-overflow:ellipsis;">{{key}}</td>
-                <td width="40%">{{original}}</td>
-                <td width="40%">
-                  {{view App.AutoGrowTextArea
-                          value=value
-                          class="form-control translation-input"
-                          focus-out="update"
-                  }}
-                </td>
-              </tr>
-            {{/each}}
-          </tbody>
-        </table>
-
-        {{partial 'pagination'}}
-      {{/if}}
+    <div class="panel-footer">
+      <%= render partial: 'pagination', locals: { translations: @translations } %>
     </div>
   </div>
-</script>
-
-<script type="text/x-handlebars" data-template-name="_pagination">
-  <div class="row pagination-container">
-    <div class="col-md-8">
-      <ul class="pagination">
-        <li class="disabled"><a href="#">&laquo;</a></li>
-
-        {{#each pages}}
-          <li {{bind-attr class="active"}}>
-            <a href="#" {{action 'changePage' number}}>
-              {{number}}
-            </a>
-          </li>
-        {{/each}}
-
-        <li class="disabled"><a href="#">&raquo;</a></li>
-      </ul>
-    </div>
-  </div>
-</script>
+</div>

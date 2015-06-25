@@ -2,29 +2,34 @@ module I18nAdmin
   class Translations
     include I18nAdmin::RequestStore
 
+    def self.translations_for(locale)
+      translations = TranslationCollection.new
+
+      for_locale(locale).each do |key, value|
+        translations << Translation.new(
+          key: key,
+          original: for_locale(I18n.default_locale)[key],
+          value: value,
+          locale: locale
+        )
+      end
+
+      translations
+    end
+
     def self.for_locale(locale)
       new.for_locale(locale.to_sym)
     end
 
-    def self.as_json_for_locale(locale)
-      for_locale(locale).map do |key, value|
-        {
-          key: key,
-          value: value,
-          original: for_locale(I18n.default_locale)[key],
-          locale: locale
-        }
-      end
-    end
+    # Save a translation object
+    def self.update(translation)
+      I18n.backend.store_translations(
+        translation.locale,
+        translation.key => translation.value
+      )
 
-    def self.update(locale, hash)
-      I18n.backend.store_translations(locale, { hash[:key] => hash[:value] })
-    end
-
-    def self.search(terms, as_json_hash)
-      rx = /#{ terms.split(' ').join('|') }/i
-      as_json_hash.select do |hash|
-        hash.any? { |key, value| value.to_s.match(rx) }
+      if translation.locale == I18n.default_locale
+        translation.original = translation.value
       end
     end
 

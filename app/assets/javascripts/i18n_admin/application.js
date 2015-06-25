@@ -11,10 +11,10 @@
 // about supported directives.
 //
 //= require jquery
-//= require handlebars
-//= require ember
+//= require jquery_ujs
 //= require jquery.autoGrow
-//= require cldr
-//= require ember-i18n
-//= require ./translations
-//= require ./app
+//= require turbolinks
+//= require bootstrap
+//= require nprogress
+//= require nprogress-turbolinks
+//= require_tree ./src

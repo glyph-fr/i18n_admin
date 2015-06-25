@@ -1,0 +1,25 @@
+fr:
+  i18n_admin:
+    translations:
+      title: 'Traductions'
+      choose_locale: 'Choisissez la langue à traduire :'
+      search: 'Rechercher'
+      loading: 'Chargement des traductions ...'
+
+    translation_set:
+      key: 'Clé'
+      original: 'Original (%{locale})'
+      translation: 'Traduction'
+
+    exports:
+      title: "Exporter les traductions"
+
+    imports:
+      title: "Importer un fichier de traductions"
+      file:
+        label: "Fichier de traductions"
+        hint: "Fichier au format .xls, à partir du modèle du fichier exporté"
+      locale:
+        label: "Langue à mettre à jour"
+      submit: "Mettre à jour les treaductions"
+      please_choose_file: "Merci de choisir un fichier à envoyer"

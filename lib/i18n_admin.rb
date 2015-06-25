@@ -1,10 +1,20 @@
 require 'kaminari'
-require 'ember-rails'
 require 'request_store'
+require 'spreadsheet'
+require 'active_model'
+require 'turbolinks'
+require 'nprogress-rails'
 
 require "i18n_admin/request_store"
 require "i18n_admin/hstore_backend"
 require "i18n_admin/translations"
+require "i18n_admin/translation_collection"
+require "i18n_admin/translation"
+
+require "i18n_admin/errors"
+require "i18n_admin/export"
+require "i18n_admin/import"
+
 require "i18n_admin/engine"
 
 module I18nAdmin
@@ -21,3 +31,5 @@ module I18nAdmin
     block_given? ? yield(self) : self
   end
 end
+
+Mime::Type.register "application/xls", :xls

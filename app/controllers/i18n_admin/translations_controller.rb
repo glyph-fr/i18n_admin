@@ -1,49 +1,30 @@
 module I18nAdmin
   class TranslationsController < I18nAdmin::ApplicationController
+    before_filter :fetch_translations
+
     def index
-      respond_to do |format|
-        format.html
-        format.json do
-          fetch_translations
+      @translations = @translations.search(params[:q]) if params[:q]
+      @translations = @translations.page(params[:page]).per(60)
 
-          if params[:q]
-            @translations = I18nAdmin::Translations.search(params[:q], @translations)
-          end
-
-          @translations = Kaminari.paginate_array(@translations)
-          @translations = @translations.page(params[:page]).per(60)
-
-          render json: {
-            translations: @translations,
-            meta: {
-              count: @translations.total_count,
-              per: 60
-            }
-          }
-        end
-      end
+      @locales = I18n.available_locales
     end
 
     def update
-      if I18nAdmin::Translations.update(locale, translation_params)
-        render json: { translation: translation_params }, status: 201
-      else
-        render json: { translation: translation_params }, status: 422
-      end
+      translation = @translations.find(params[:id])
+      translation.value = translation_params[:value]
+
+      I18nAdmin::Translations.update(translation)
+      render partial: 'translation', locals: { translation: translation }
     end
 
     private
 
     def translation_params
-      params.require(:translation).permit(:key, :value)
+      params.require(:translation).permit(:value)
     end
 
     def fetch_translations
-      @translations ||= I18nAdmin::Translations.as_json_for_locale(locale)
-    end
-
-    def locale
-      @locale ||= params[:locale] || I18n.locale
+      @translations = I18nAdmin::Translations.translations_for(current_locale)
     end
   end
 end

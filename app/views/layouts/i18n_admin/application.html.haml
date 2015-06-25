@@ -1,9 +1,11 @@
 !!!
-%html{ lang: I18n.locale, data: { :'avaliable-locales' => I18n.available_locales.to_json, :'default-locale' => I18n.default_locale } }
+%html{ lang: I18n.locale }
   %head
     %title Translations Admin
     = stylesheet_link_tag    "i18n_admin/application", media: "all"
     = javascript_include_tag "i18n_admin/application"
     = csrf_meta_tags
+
   %body
+    = display_flash
     = yield

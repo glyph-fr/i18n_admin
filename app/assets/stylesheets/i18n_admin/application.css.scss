@@ -11,24 +11,78 @@
  * file per style scope.
  *
  *= require_tree .
+ *= require nprogress
+ *= require nprogress-bootstrap
  *= require_self
  */
 
-@import "bootstrap-sprockets";
 @import "bootstrap";
 
 body {
   overflow: scroll;
 }
 
-.main-container {
-  margin-top: 70px;
-}
-
 .pagination {
   margin-top: 0;
 }
 
+.panel-title {
+  font-size: 2em;
+}
+
+.panel-heading h2 {
+  font-size: 1em;
+  margin-top: 0;
+}
+
+.panel-default > .panel-heading.panel-subheading,
+.panel-default > .panel-footer {
+  background: #fcfcfc;
+}
+
+.panel-subheading .pagination-container .text-center {
+  text-align: left;
+}
+
+.pagination-container .pagination {
+  margin-bottom: 0px;
+}
+
+.pagination-column {
+  border-right: 1px solid #ccc;
+}
+
+.table > tbody > tr > td.input-cell {
+  padding: 0;
+}
+
 .translation-input {
   min-width: 400px;
+
+  &.success {
+    background: #DFF0D8;
+  }
 }
+
+td.input-cell textarea {
+  border-radius: 0;
+  border: 0;
+  box-shadow: 1px 2px 5px #f0f0f0 inset;
+}
+
+td.input-cell textarea:focus {
+ box-shadow: 1px 2px 5px #ccc inset;
+}
+
+.translation-row {
+  &.loading {
+    opacity: 0.5;
+  }
+}
+
+.translation-key-cell {
+  max-width: 100px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+

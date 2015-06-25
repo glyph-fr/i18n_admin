@@ -19,12 +19,11 @@ Gem::Specification.new do |s|
   s.add_dependency "rails", "~> 4.0"
   s.add_dependency 'bootstrap-sass'
   s.add_dependency 'coffee-rails'
-  s.add_dependency 'ember-source', '1.7.0'
-  s.add_dependency 'ember-data-source', '1.0.0.beta.9'
-  s.add_dependency 'ember-handlebars-template', '0.1.5'
-  s.add_dependency 'ember-rails', '0.15.0'
   s.add_dependency 'kaminari'
   s.add_dependency 'request_store'
+  s.add_dependency 'spreadsheet'
+  s.add_dependency 'nprogress-rails'
+  s.add_dependency 'turbolinks'
 
   s.add_development_dependency "sqlite3"
 end

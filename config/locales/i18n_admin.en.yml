@@ -1,0 +1,28 @@
+en:
+  i18n_admin:
+    translations:
+      title: 'Translations'
+      choose_locale: 'Choose locale to translate :'
+      search: 'Search'
+      loading: 'Loading translations ...'
+
+    translation_set:
+      key: 'Key'
+      original: 'Original (%{locale})'
+      translation: 'Translation'
+
+    exports:
+      title: "Export translations file"
+
+    imports:
+      title: "Import translations file"
+      file:
+        label: "Translations file"
+        hint: "File in .xls format, from the exported file template"
+      locale:
+        label: "Locale to update"
+      submit: "Update translations"
+      please_choose_file: "Please choose a file to upload"
+      run:
+        success: "The file has been successfully imported"
+        errors: "The file was imported, but some errors happened"
