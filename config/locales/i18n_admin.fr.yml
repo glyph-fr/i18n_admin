@@ -8,7 +8,7 @@ fr:
 
     translation_set:
       key: 'Clé'
-      original: 'Original (%{locale})'
+      original: 'Original (%{default_locale})'
       translation: 'Traduction'
 
     exports:
