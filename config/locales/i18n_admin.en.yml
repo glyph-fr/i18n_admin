@@ -3,8 +3,9 @@ en:
     translations:
       title: 'Translations'
       choose_locale: 'Choose locale to translate :'
-      search: 'Search'
-      loading: 'Loading translations ...'
+      search:
+        submit: 'Search'
+        cancel: 'Cancel search'
 
     translation_set:
       key: 'Key'

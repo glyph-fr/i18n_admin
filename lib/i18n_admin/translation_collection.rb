@@ -15,11 +15,11 @@ module I18nAdmin
     end
 
     def search(query)
-      regex = /#{ terms.split(' ').join('|') }/i
+      regex = /#{ query.split(' ').join('|') }/i
 
       # Duplicate and filter translations
       updated = dup
-      updated.select! { |translation| translation.matches?(regex) }
+      updated.translations.select! { |translation| translation.matches?(regex) }
       updated
     end
 

@@ -33,7 +33,7 @@
         </div>
 
         <div class="col-md-6">
-          <%= form_tag translations_path(locale: current_locale) do %>
+          <%= form_tag translations_path(locale: current_locale), method: :get do %>
             <div class="input-group">
               <span class="input-group-addon">
                 <i class="glyphicon glyphicon-search"></i>
@@ -42,9 +42,15 @@
               <%= text_field_tag :q, params[:q], class: 'form-control' %>
 
               <span class="input-group-btn">
-                <button class="btn btn-default" type="submit">
-                  <%= t('i18n_admin.translations.search') %>
+                <button class="btn btn-primary" type="submit">
+                  <%= t('i18n_admin.translations.search.submit') %>
                 </button>
+
+                <% if params[:q].present? %>
+                  <%= link_to translations_path(locale: current_locale), class: 'btn btn-danger' do %>
+                    <%= t('i18n_admin.translations.search.cancel') %>
+                  <% end %>
+                <% end %>
               </span>
             </div>
           <% end %>

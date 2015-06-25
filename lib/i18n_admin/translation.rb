@@ -16,7 +16,7 @@ module I18nAdmin
 
     def matches?(search)
       [:key, :original, :value].any? do |key|
-        translation.send(key).to_s.match(search)
+        send(key).to_s.match(search)
       end
     end
 
