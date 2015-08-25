@@ -24,3 +24,15 @@ fr:
         label: "Langue à mettre à jour"
       submit: "Mettre à jour les treaductions"
       please_choose_file: "Merci de choisir un fichier à envoyer"
+      processing:
+        title: "Import en cours"
+        help_text: |
+          L'import des traductions est en cours.
+          Cette opération peut prendre de quelques secondes à plusieurs minutes,
+          en fonction de la taille du fichier importé.
+      run:
+        success: "Le fichier a bien été importé"
+        errors: "Le fichier a été importé, mais certaines erreurs ont eu lieu"
+
+    shared:
+      back: "Retour"

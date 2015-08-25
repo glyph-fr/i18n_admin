@@ -24,6 +24,15 @@ en:
         label: "Locale to update"
       submit: "Update translations"
       please_choose_file: "Please choose a file to upload"
+      processing:
+        title: "Importing"
+        help_text: |
+          The translations file is being imported.
+          This can take from some seconds to several minutes, depending on
+          the size of the imported file.
       run:
         success: "The file has been successfully imported"
         errors: "The file was imported, but some errors happened"
+
+    shared:
+      back: "Back"

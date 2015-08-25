@@ -4,6 +4,7 @@ require 'spreadsheet'
 require 'active_model'
 require 'turbolinks'
 require 'nprogress-rails'
+require 'sucker_punch'
 
 require "i18n_admin/request_store"
 require "i18n_admin/hstore_backend"

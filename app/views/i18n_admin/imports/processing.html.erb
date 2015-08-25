@@ -1,0 +1,33 @@
+<div class="container-fluid main-container" data-processing-import data-check-url="<%= import_path(id: @job) %>">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h1 class="panel-title">
+        <%= t('i18n_admin.imports.processing.title') %>
+      </h1>
+    </div>
+
+    <div class="panel-body" data-status="pending">
+      <p class="help-block text-center">
+        <%= t('i18n_admin.imports.processing.help_text') %>
+        <br><br>
+        <%= image_tag 'i18n_admin/spinner.gif' %>
+      </p>
+    </div>
+
+    <div class="panel-body hidden" data-status="success">
+      <div class="alert alert-success">
+        <%= t('i18n_admin.imports.run.success') %>
+      </div>
+
+      <%= link_to t('i18n_admin.shared.back'), new_import_path, class: 'btn btn-primary' %>
+    </div>
+
+    <div class="panel-body hidden" data-status="error">
+      <div class="alert alert-error">
+        <%= t('i18n_admin.imports.run.errors') %>
+      </div>
+
+      <%= link_to t('i18n_admin.shared.back'), new_import_path, class: 'btn btn-primary' %>
+    </div>
+  </div>
+</div>

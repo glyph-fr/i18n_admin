@@ -1,5 +1,14 @@
 module I18nAdmin
   class ImportsController < I18nAdmin::ApplicationController
+    def show
+      respond_to do |format|
+        format.json do
+          job = ImportJob.find(params[:id])
+          render json: job.as_json(only: [:id, :filename, :state])
+        end
+      end
+    end
+
     def new
     end
 
@@ -10,15 +19,10 @@ module I18nAdmin
         return
       end
 
-      @import = Import::XLS.new(current_locale, params[:file])
+      @job = ImportJob.create!(locale: current_locale, filename: params[:file].original_filename)
+      Import::Job.new.async.perform(current_locale, params[:file], @job.id)
 
-      if @import.run
-        flash[:success] = t('i18n_admin.imports.run.success')
-        redirect_to new_import_path
-      else
-        flash[:error] = t('i18n_admin.imports.run.errors')
-        render 'new'
-      end
+      render 'processing'
     end
   end
 end

@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'spreadsheet'
   s.add_dependency 'nprogress-rails'
   s.add_dependency 'turbolinks'
+  s.add_dependency 'sucker_punch'
 
   s.add_development_dependency "sqlite3"
 end
