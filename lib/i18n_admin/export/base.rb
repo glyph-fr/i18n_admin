@@ -13,7 +13,7 @@ module I18nAdmin
 
       def translations
         @translations ||=
-          I18nAdmin::Translations.for_locale(locale).merge(
+          translations_for_locale(locale).merge(
             models_translations_for(locale)
           )
       end
@@ -23,6 +23,16 @@ module I18nAdmin
           I18nAdmin::Translations.for_locale(I18n.default_locale).merge(
             models_translations_for(I18n.default_locale)
           )
+      end
+
+      def translations_for_locale(locale)
+        I18nAdmin::Translations.for_locale(locale).select do |key, value|
+          if (pattern = I18nAdmin.excluded_keys_pattern)
+            !key.match(pattern)
+          else
+            true
+          end
+        end
       end
 
       def models_translations_for(locale)
