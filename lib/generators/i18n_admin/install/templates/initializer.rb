@@ -14,4 +14,10 @@ I18nAdmin.config do |config|
   #   config.excluded_keys_pattern = /^activerecord\./
   #
   # config.excluded_keys_pattern = nil
+
+  # When exporting translations, all translated models are exported.
+  # If you want to be able to whitelist exportable models, set the
+  # following option to true
+  #
+  # config.whitelist_models = false
 end

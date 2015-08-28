@@ -30,7 +30,7 @@ module I18nAdmin
 
         I18n.with_locale(locale) do
           translated_models.each do |model, attributes|
-            model.includes(:translations).each do |resource|
+            whitelisted_resources_for(model).includes(:translations).each do |resource|
               attributes.each do |attribute|
                 key = model_translation_key_for(resource, attribute)
                 model_translations[key] = resource.send(attribute).to_s
@@ -78,6 +78,21 @@ module I18nAdmin
 
       def lchomp(base, arg)
         base.to_s.reverse.chomp(arg.to_s.reverse).reverse
+      end
+
+      # If the `whitelist_models` option is set to true in the initializer,
+      # only fetch the explicitly whitelisted resources for each model
+      #
+      def whitelisted_resources_for(model)
+        if I18nAdmin.whitelist_models
+          resource_id_field = [model.table_name, model.primary_key].join('.')
+          model.joins(
+            'INNER JOIN i18n_admin_whitelisted_resources AS whitelist ' \
+            "ON whitelist.resource_id = #{ resource_id_field }"
+          ).where(whitelist: { resource_type: model.name })
+        else
+          model
+        end
       end
     end
   end

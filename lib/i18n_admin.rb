@@ -28,6 +28,9 @@ module I18nAdmin
   mattr_accessor :excluded_keys_pattern
   @@excluded_keys_pattern = nil
 
+  mattr_accessor :whitelist_models
+  @@whitelist_models = false
+
   def self.config(&block)
     block_given? ? yield(self) : self
   end
