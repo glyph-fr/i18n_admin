@@ -22,7 +22,7 @@ fr:
         hint: "Fichier au format .xls, à partir du modèle du fichier exporté"
       locale:
         label: "Langue à mettre à jour"
-      submit: "Mettre à jour les treaductions"
+      submit: "Mettre à jour les traductions"
       please_choose_file: "Merci de choisir un fichier à envoyer"
       processing:
         title: "Import en cours"
