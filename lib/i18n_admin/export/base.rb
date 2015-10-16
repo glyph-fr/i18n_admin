@@ -61,10 +61,14 @@ module I18nAdmin
           return [] unless defined?(Globalize)
 
           model_names.each_with_object({}) do |model_name, models|
-            model = model_name.constantize
+            begin
+              model = model_name.constantize
 
-            if model.respond_to?(:translates?) && model.translates?
-              models[model] = model.translated_attribute_names
+              if model.respond_to?(:translates?) && model.translates?
+                models[model] = model.translated_attribute_names
+              end
+            rescue LoadError
+              next
             end
           end
         end
