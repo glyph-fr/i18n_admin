@@ -33,13 +33,14 @@
         </div>
 
         <div class="col-md-6">
-          <%= form_tag translations_path(locale: current_locale), method: :get do %>
+          <%= form_tag translations_path, method: :get do %>
             <div class="input-group">
               <span class="input-group-addon">
                 <i class="glyphicon glyphicon-search"></i>
               </span>
 
               <%= text_field_tag :q, params[:q], class: 'form-control' %>
+              <%= hidden_field_tag :locale, current_locale %>
 
               <span class="input-group-btn">
                 <button class="btn btn-primary" type="submit">
