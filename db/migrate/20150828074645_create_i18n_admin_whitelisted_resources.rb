@@ -1,7 +1,7 @@
 class CreateI18nAdminWhitelistedResources < ActiveRecord::Migration
   def change
     create_table :i18n_admin_whitelisted_resources do |t|
-      t.references :resource, polymorphic: true, foreign_key: true
+      t.references :resource, polymorphic: true
 
       t.timestamps null: false
     end

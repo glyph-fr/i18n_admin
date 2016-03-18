@@ -18,5 +18,11 @@ module I18nAdmin
         )
       end
     end
+
+    initializer 'Include model into ActiveRecord' do
+      ActiveSupport.on_load(:active_record) do
+        include I18nAdmin::Model
+      end
+    end
   end
 end

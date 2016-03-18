@@ -5,6 +5,8 @@ require 'active_model'
 require 'turbolinks'
 require 'nprogress-rails'
 require 'sucker_punch'
+require 'para'
+require 'active_record'
 
 require "i18n_admin/request_store"
 require "i18n_admin/hstore_backend"
@@ -15,6 +17,8 @@ require "i18n_admin/translation"
 require "i18n_admin/errors"
 require "i18n_admin/export"
 require "i18n_admin/import"
+
+require "i18n_admin/model"
 
 require "i18n_admin/engine"
 
