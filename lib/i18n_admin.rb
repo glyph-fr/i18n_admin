@@ -8,19 +8,20 @@ require 'sucker_punch'
 require 'para'
 require 'active_record'
 
-require "i18n_admin/request_store"
-require "i18n_admin/hstore_backend"
-require "i18n_admin/translations"
-require "i18n_admin/translation_collection"
-require "i18n_admin/translation"
+require 'i18n_admin/request_store'
+require 'i18n_admin/hstore_backend'
+require 'i18n_admin/translations'
+require 'i18n_admin/translation_collection'
+require 'i18n_admin/translation'
 
-require "i18n_admin/errors"
-require "i18n_admin/export"
-require "i18n_admin/import"
+require 'i18n_admin/errors'
+require 'i18n_admin/export'
+require 'i18n_admin/import'
 
-require "i18n_admin/model"
+require 'i18n_admin/model'
+require 'i18n_admin/nil_translation'
 
-require "i18n_admin/engine"
+require 'i18n_admin/engine'
 
 module I18nAdmin
   mattr_accessor :authentication_method
@@ -40,4 +41,4 @@ module I18nAdmin
   end
 end
 
-Mime::Type.register "application/xls", :xls
+Mime::Type.register 'application/xls', :xls
