@@ -5,6 +5,11 @@ require 'active_model'
 require 'turbolinks'
 require 'nprogress-rails'
 require 'sucker_punch'
+require 'sidekiq'
+require 'sidekiq/job_monitor'
+require 'paperclip'
+
+require 'ext/paperclip'
 
 require "i18n_admin/request_store"
 require "i18n_admin/hstore_backend"
@@ -30,6 +35,9 @@ module I18nAdmin
 
   mattr_accessor :whitelist_models
   @@whitelist_models = false
+
+  mattr_accessor :async_io
+  @@async_io = false
 
   def self.config(&block)
     block_given? ? yield(self) : self

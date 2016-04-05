@@ -1,8 +1,8 @@
-require 'pp'
-
 module I18nAdmin
   module Export
     class Base
+      include Sidekiq::Worker
+
       attr_reader :locale
 
       def self.register(type, export)

@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
-  s.add_dependency "rails", "~> 4.0"
+  s.add_dependency "rails", "~> 4.2"
   s.add_dependency 'bootstrap-sass'
   s.add_dependency 'coffee-rails'
   s.add_dependency 'kaminari'
@@ -25,6 +25,9 @@ Gem::Specification.new do |s|
   s.add_dependency 'nprogress-rails'
   s.add_dependency 'turbolinks'
   s.add_dependency 'sucker_punch'
+  s.add_dependency 'sidekiq'
+  s.add_dependency 'sidekiq-job_monitor'
+  s.add_dependency 'paperclip'
 
   s.add_development_dependency "sqlite3"
 end

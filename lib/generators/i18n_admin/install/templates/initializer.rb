@@ -20,4 +20,9 @@ I18nAdmin.config do |config|
   # following option to true
   #
   # config.whitelist_models = false
+
+  # If you want imports and exports to be processed asynchronously through
+  # `ActiveJob`, set the following to true.
+  #
+  # config.async_io = false
 end

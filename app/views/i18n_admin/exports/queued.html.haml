@@ -1,0 +1,18 @@
+= modal id: 'job-queued-modal', data: { :'i18n-job-monitoring' => true, :'monitor-url' => job_monitor.job_progress_path(@job_id) } do |modal|
+  = modal.header do
+    = t('i18n_admin.exports.queued.title')
+
+  = modal.body do
+    %p= t('i18n_admin.exports.queued.please_wait')
+
+    %p.help-block= t('i18n_admin.exports.queued.help')
+
+    %hr
+
+    .progress
+      .progress-bar.progress-bar-info.progress-bar-striped.active{ style: 'width:100%;' }
+
+  = modal.footer do
+    = link_to '#', class: 'btn btn-default', data: { cancel: 'job' } do
+      = fa_icon 'times'
+      = t('i18n_admin.shared.cancel')
