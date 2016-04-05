@@ -47,7 +47,7 @@
 
         <div class="form-group">
           <%= label_tag :locale, t('i18n_admin.imports.locale.label') %>
-          <%= select_tag :locale, options_for_select(I18n.available_locales) %>
+          <%= select_tag :locale, options_for_select(I18n.available_locales), include_blank: true %>
         </div>
 
         <div class="form-actions">

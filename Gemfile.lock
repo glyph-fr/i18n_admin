@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    i18n_admin (0.2.0)
+    i18n_admin (0.3.0)
       bootstrap-sass
       coffee-rails
       kaminari

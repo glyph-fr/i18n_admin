@@ -2,6 +2,10 @@ require 'i18n/backend/key_value'
 
 module I18nAdmin
   class HstoreBackend < I18n::Backend::KeyValue
+    def available_locales
+      @available_locales ||= I18nAdmin::TranslationsSet.pluck(:locale)
+    end
+
     class Store
       include I18nAdmin::RequestStore
 
