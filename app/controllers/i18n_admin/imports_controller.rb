@@ -20,7 +20,7 @@ module I18nAdmin
       end
 
       @job = ImportJob.create!(locale: current_locale, filename: params[:file].original_filename)
-      Import::Job.new.async.perform(current_locale, params[:file], @job.id)
+      Import::Job.perform_async(current_locale, params[:file], @job.id)
 
       render 'processing'
     end

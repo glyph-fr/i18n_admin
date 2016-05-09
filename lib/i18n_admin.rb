@@ -7,6 +7,11 @@ require 'nprogress-rails'
 require 'sucker_punch'
 require 'para'
 require 'active_record'
+require 'sidekiq'
+require 'sidekiq/job_monitor'
+require 'paperclip'
+
+require 'ext/paperclip'
 
 require 'i18n_admin/request_store'
 require 'i18n_admin/hstore_backend'
@@ -19,6 +24,7 @@ require 'i18n_admin/export'
 require 'i18n_admin/import'
 
 require 'i18n_admin/model'
+require 'i18n_admin/para/translations_helper'
 require 'i18n_admin/engine'
 
 module I18nAdmin
@@ -33,6 +39,9 @@ module I18nAdmin
 
   mattr_accessor :whitelist_models
   @@whitelist_models = false
+
+  mattr_accessor :async_io
+  @@async_io = false
 
   def self.config(&block)
     block_given? ? yield(self) : self

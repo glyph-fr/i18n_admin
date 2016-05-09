@@ -6,19 +6,17 @@ module I18nAdmin
       PAGE_LENGTH = 32_000.0
 
       attr_reader :spreadsheet, :sheet
+      attr_accessor :export_file
 
-      def self.export(locale)
-        export = new(locale)
-        export.run
-        export.data
-      end
-
-      def initialize(locale)
+      def perform(locale)
         @locale = locale
         @spreadsheet = Spreadsheet::Workbook.new
         @sheet = spreadsheet.create_worksheet
 
         add_headers!
+
+        run
+        save
       end
 
       def run
@@ -52,20 +50,44 @@ module I18nAdmin
         end
       end
 
-      def data
-        tmp = Tempfile.new('_translations')
-        spreadsheet.write(tmp.path)
-        source = File.open(tmp.path, 'rb')
+      def save
+        spreadsheet.write(file_path)
 
-        source.read
+        source = File.open(file_path, 'rb')
+        self.export_file = ExportFile.create!(job_id: jid, file: source)
       ensure
-        source.close if defined?(source) && source
+        if defined?(source) && source
+          source.close
+          File.unlink(source.path)
+        end
+      end
+
+      def file_path
+        @file_path ||= [
+          '',
+          'tmp',
+          I18n.t('i18n_admin.exports.file.name', time: Time.now.strftime('%Y_%m_%d-%H_%M'), lang: locale, ext: 'xls')
+        ].join('/')
+      end
+
+      def monitoring_data(_, state)
+        { url: export_file.file.url } if state == 'complete'
+      end
+
+      def export_file
+        @export_file ||= ExportFile.find_by_job_id(jid)
       end
 
       private
 
       def add_headers!
-        sheet.row(0).replace(['Key', 'Original', 'Translated'])
+        sheet.row(0).replace(
+          [
+            I18n.t('i18n_admin.exports.file.columns.key'),
+            I18n.t('i18n_admin.exports.file.columns.original', lang: I18n.default_locale),
+            I18n.t('i18n_admin.exports.file.columns.translated', lang: locale)
+          ]
+        )
 
         format = Spreadsheet::Format.new weight: :bold
 

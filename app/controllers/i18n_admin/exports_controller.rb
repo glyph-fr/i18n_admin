@@ -2,25 +2,18 @@ module I18nAdmin
   class ExportsController < I18nAdmin::ApplicationController
     def show
       respond_to do |format|
-        format.xls do
-          data = Export::XLS.export(current_locale)
+        format.html do
+          @job_id = Export::XLS.perform_async(current_locale.to_s)
+          render 'queued', layout: false
+        end
 
-          send_data data, filename: export_filename,
-                          disposition: :attachment,
-                          type: 'application/vnd.ms-excel'
+        format.xls do
+          job = Export::XLS.new(current_locale.to_s)
+          job.perform
+
+          redirect_to job.export_file.file.url
         end
       end
-    end
-
-    private
-
-    def export_filename
-      [
-        'export-traductions',
-        Time.now.strftime('%Y%m%d%H%M'),
-        current_locale,
-        'xls'
-      ].join('.')
     end
   end
 end

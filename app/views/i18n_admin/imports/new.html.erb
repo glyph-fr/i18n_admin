@@ -9,7 +9,7 @@
     <div class="panel-body">
       <div class="list-group">
         <% I18n.available_locales.each do |locale| %>
-          <%= link_to export_path(locale: locale, format: :xls), class: 'list-group-item' do %>
+          <%= link_to export_path(locale: locale, format: (:xls unless I18nAdmin.async_io)), class: 'list-group-item', remote: I18nAdmin.async_io, data: { :'export-link' => true } do %>
             <i class="glyphicon glyphicon-download"></i>
             <%= locale %>
           <% end %>
@@ -47,7 +47,7 @@
 
         <div class="form-group">
           <%= label_tag :locale, t('i18n_admin.imports.locale.label') %>
-          <%= select_tag :locale, options_for_select(I18n.available_locales) %>
+          <%= select_tag :locale, options_for_select(I18n.available_locales), include_blank: true %>
         </div>
 
         <div class="form-actions">

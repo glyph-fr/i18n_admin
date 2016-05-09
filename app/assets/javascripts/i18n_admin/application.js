@@ -17,4 +17,5 @@
 //= require bootstrap
 //= require nprogress
 //= require nprogress-turbolinks
+//= require sidekiq-job_monitor
 //= require_tree ./src

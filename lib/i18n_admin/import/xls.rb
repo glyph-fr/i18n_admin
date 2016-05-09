@@ -1,6 +1,7 @@
 module I18nAdmin
   module Import
     class XLS < Import::Base
+      # Used to split cells with large content
       PAGINATION_PATTERN = /\(\d+ \/ (\d+)\)$/
 
       register :xls, self

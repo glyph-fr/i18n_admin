@@ -8,7 +8,7 @@ module I18nAdmin
           import = Import::XLS.new(locale, file_path)
           job = I18nAdmin::ImportJob.find(job_id)
 
-          state = import.run ? 'success' : error
+          state = import.run ? 'success' : 'error'
           job.update(state: state)
         end
       end

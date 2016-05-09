@@ -14,11 +14,25 @@ module I18nAdmin
     desc "I18nAdmin translation generator"
 
     def generate_migration
-      migration_template 'model_migration.rb.erb', "db/migrate/translate_#{ file_name }.rb"
+      migration_template 'model_migration.rb.erb', "db/migrate/translate_#{ plural_file_name }.rb"
     end
 
     def migrate
       rake 'db:migrate' if options[:migrate]
+    end
+
+    private
+
+    def class_name
+      @class_name ||= super.gsub(/I18nAdmin::/, '')
+    end
+
+    def plural_class_name
+      @plural_class_name ||= class_name.pluralize
+    end
+
+    def table_name
+      @table_name ||= plural_class_name.underscore
     end
   end
 end

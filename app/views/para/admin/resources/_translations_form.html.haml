@@ -1,0 +1,6 @@
+= para_form_for(resource) do |form|
+  = form.fieldset do
+    - translated_model_fields_for(resource.class).each do |field|
+      = form.send(field.field_method, field.field_name, field.field_options)
+
+  = form.actions

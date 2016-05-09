@@ -1,8 +1,8 @@
-require 'pp'
-
 module I18nAdmin
   module Export
     class Base
+      include Sidekiq::Worker
+
       attr_reader :locale
 
       def self.register(type, export)
@@ -98,15 +98,19 @@ module I18nAdmin
       # only fetch the explicitly whitelisted resources for each model
       #
       def whitelisted_resources_for(model)
-        if I18nAdmin.whitelist_models
-          resource_id_field = [model.table_name, model.primary_key].join('.')
-          model.joins(
-            'INNER JOIN i18n_admin_whitelisted_resources AS whitelist ' \
-            "ON whitelist.resource_id = #{ resource_id_field }"
-          ).where(whitelist: { resource_type: model.name })
-        else
-          model
-        end
+        resource_id_field = [model.table_name, model.primary_key].join('.')
+
+        whitelisted_resources = 
+          if I18nAdmin.whitelist_models
+            model.joins(
+              'INNER JOIN i18n_admin_whitelisted_resources AS whitelist ' \
+              "ON whitelist.resource_id = #{ resource_id_field }"
+            ).where(whitelist: { resource_type: model.name })
+          else
+            model.all
+          end
+
+        whitelisted_resources.order("#{ resource_id_field } ASC")
       end
     end
   end
