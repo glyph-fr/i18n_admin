@@ -19,8 +19,6 @@ require 'i18n_admin/export'
 require 'i18n_admin/import'
 
 require 'i18n_admin/model'
-require 'i18n_admin/nil_translation'
-
 require 'i18n_admin/engine'
 
 module I18nAdmin
