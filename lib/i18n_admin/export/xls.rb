@@ -54,7 +54,7 @@ module I18nAdmin
         spreadsheet.write(file_path)
 
         source = File.open(file_path, 'rb')
-        self.export_file = ExportFile.create!(job_id: jid, file: source)
+        self.export_file = ExportFile.create!(job_id: job_id, file: source)
       ensure
         if defined?(source) && source
           source.close
@@ -75,7 +75,7 @@ module I18nAdmin
       end
 
       def export_file
-        @export_file ||= ExportFile.find_by_job_id(jid)
+        @export_file ||= ExportFile.find_by_job_id(job_id)
       end
 
       private
@@ -96,6 +96,14 @@ module I18nAdmin
         sheet.column(0).width = 30
         sheet.column(1).width = 100
         sheet.column(2).width = 100
+      end
+
+      def job_id
+        @job_id ||= jid || randomize_job_id
+      end
+
+      def randomize_job_id
+        ['sync', (Time.now.to_f * 1000).round, rand(1000)]
       end
     end
   end

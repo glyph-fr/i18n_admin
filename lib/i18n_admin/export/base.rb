@@ -40,7 +40,7 @@ module I18nAdmin
 
         I18n.with_locale(locale) do
           translated_models.each do |model, attributes|
-            whitelisted_resources_for(model).includes(:translations).each do |resource|
+            whitelisted_resources_for(model).each do |resource|
               attributes.each do |attribute|
                 key = model_translation_key_for(resource, attribute)
                 model_translations[key] = resource.send(attribute).to_s
@@ -58,18 +58,24 @@ module I18nAdmin
 
       def translated_models
         @translated_models ||= begin
-          return [] unless defined?(Globalize)
+          if defined?(Globalize) || defined?(Para::I18n)
+            fetch_translated_models
+          else
+            []
+          end
+        end
+      end
 
-          model_names.each_with_object({}) do |model_name, models|
-            begin
-              model = model_name.constantize
+      def fetch_translated_models
+        model_names.each_with_object({}) do |model_name, models|
+          begin
+            model = model_name.constantize
 
-              if model.respond_to?(:translates?) && model.translates?
-                models[model] = model.translated_attribute_names
-              end
-            rescue LoadError
-              next
+            if model.respond_to?(:translates?) && model.translates?
+              models[model] = model.translated_attribute_names
             end
+          rescue LoadError
+            next
           end
         end
       end
@@ -100,7 +106,7 @@ module I18nAdmin
       def whitelisted_resources_for(model)
         resource_id_field = [model.table_name, model.primary_key].join('.')
 
-        whitelisted_resources = 
+        whitelisted_resources =
           if I18nAdmin.whitelist_models
             model.joins(
               'INNER JOIN i18n_admin_whitelisted_resources AS whitelist ' \
@@ -110,7 +116,13 @@ module I18nAdmin
             model.all
           end
 
-        whitelisted_resources.order("#{ resource_id_field } ASC")
+        whitelisted_resources = whitelisted_resources.order("#{ resource_id_field } ASC")
+
+        if defined?(Globalize)
+          whitelisted_resources.includes(:translations)
+        else
+          whitelisted_resources
+        end
       end
     end
   end
