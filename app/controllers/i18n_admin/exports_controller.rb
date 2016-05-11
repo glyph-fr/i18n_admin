@@ -8,8 +8,8 @@ module I18nAdmin
         end
 
         format.xls do
-          job = Export::XLS.new(current_locale.to_s)
-          job.perform
+          job = Export::XLS.new
+          job.perform(current_locale.to_s)
 
           redirect_to job.export_file.file.url
         end
