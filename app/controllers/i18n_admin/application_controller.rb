@@ -1,5 +1,7 @@
 module I18nAdmin
-  class ApplicationController < ::ApplicationController
+  class ApplicationController < I18nAdmin.root_controller_parent.constantize
+    include FontAwesome::Rails::IconHelper
+
     helper_method :current_locale
 
     if (authentication_method = I18nAdmin.authentication_method)

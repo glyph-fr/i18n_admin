@@ -8,6 +8,7 @@ require 'sucker_punch'
 require 'sidekiq'
 require 'sidekiq/job_monitor'
 require 'paperclip'
+require 'font-awesome-rails'
 
 require 'ext/paperclip'
 
@@ -24,6 +25,9 @@ require "i18n_admin/import"
 require "i18n_admin/engine"
 
 module I18nAdmin
+  mattr_accessor :root_controller_parent
+  @@root_controller_parent = '::ActionController::Base'
+
   mattr_accessor :authentication_method
   @@authentication_method = :authenticate_user!
 
