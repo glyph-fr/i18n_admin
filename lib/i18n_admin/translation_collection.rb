@@ -4,7 +4,7 @@ module I18nAdmin
 
     attr_writer :translations
 
-    delegate :<<, :each, :[], :[]=, to: :translations
+    delegate :<<, :each, :[], :[]=, :length, to: :translations
 
     def translations
       @translations ||= []
