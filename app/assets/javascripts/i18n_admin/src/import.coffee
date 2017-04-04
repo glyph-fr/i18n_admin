@@ -18,6 +18,6 @@ class ImportProgress
     $('[data-status="pending"]').addClass('hidden')
     $('[data-status="error"]').removeClass('hidden')
 
-$(document).on 'page:change', ->
+$(document).on 'page:change turbolinks:load', ->
   if ($importProgress = $('[data-processing-import]')).length
     new ImportProgress($importProgress)

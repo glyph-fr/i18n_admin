@@ -32,6 +32,6 @@ class I18nAdminJobMonitor
     @monitor.cancelJob()
 
 
-$(document).on 'page:change', ->
+$(document).on 'page:change turbolinks:load', ->
   $('[data-export-link][data-remote]').each (i, el) ->
     new I18nAdminJobMonitor($(el))

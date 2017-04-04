@@ -40,6 +40,6 @@ class Translation
     @$field.addClass('success')
     setTimeout (=> @$field.removeClass('success')), 1000
 
-$(document).on 'page:change', ->
+$(document).on 'page:change turbolinks:load', ->
   if ($translations = $('[data-translation]')).length
     $translations.each (i, el) -> new Translation($(el))
