@@ -8,8 +8,9 @@ module I18nAdmin
       attr_reader :spreadsheet, :sheet
       attr_accessor :export_file
 
-      def perform(locale)
+      def perform(locale, client_locale: I18n.locale)
         @locale = locale
+        @client_locale = client_locale
         @spreadsheet = Spreadsheet::Workbook.new
         @sheet = spreadsheet.create_worksheet
 
@@ -63,11 +64,17 @@ module I18nAdmin
       end
 
       def file_path
-        @file_path ||= [
-          '',
-          'tmp',
-          I18n.t('i18n_admin.exports.file.name', time: Time.now.strftime('%Y_%m_%d-%H_%M'), lang: locale, ext: 'xls')
-        ].join('/')
+        @file_path ||= ['', 'tmp', file_name].join('/')
+      end
+
+      def file_name
+        @file_name ||= I18n.with_locale(client_locale) do
+          I18n.t('i18n_admin.exports.file.name', {
+            time: Time.now.strftime('%Y_%m_%d-%H_%M'),
+            lang: locale,
+            ext: 'xls'
+          })
+        end
       end
 
       def monitoring_data(_, state)

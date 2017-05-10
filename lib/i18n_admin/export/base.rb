@@ -3,7 +3,7 @@ module I18nAdmin
     class Base
       include Sidekiq::Worker
 
-      attr_reader :locale
+      attr_reader :locale, :client_locale
 
       def self.register(type, export)
         Export.types[type] = export
@@ -74,7 +74,7 @@ module I18nAdmin
             if model.respond_to?(:translates?) && model.translates?
               models[model] = model.translated_attribute_names
             end
-          rescue LoadError
+          rescue LoadError, NameError
             next
           end
         end
