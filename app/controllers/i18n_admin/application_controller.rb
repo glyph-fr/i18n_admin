@@ -5,7 +5,7 @@ module I18nAdmin
     helper_method :current_locale
 
     if (authentication_method = I18nAdmin.authentication_method)
-      before_filter authentication_method
+      before_action authentication_method
     end
 
     def current_user

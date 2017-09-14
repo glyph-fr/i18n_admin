@@ -1,6 +1,6 @@
 module I18nAdmin
   class TranslationsController < I18nAdmin::ApplicationController
-    before_filter :fetch_translations
+    before_action :fetch_translations
 
     def index
       @translations = @translations.search(params[:q]) if params[:q]
