@@ -93,13 +93,27 @@ body {
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
+.btn {
+  text-transform: uppercase;
+  font-weight: 700;
+  border-radius: 2px;
+}
+
+.btn.btn-danger {
+  color: #fff;
+  background-color: #FB9678;
+  border-color: #FB9678;
+  &:hover,
+  &:focus {
+    background-color: #fa6f46;
+    border-color: #f9683d;
+  }
+}
+
 .btn.btn-primary {
   color: #fff;
   background-color: #03A9F3;
   border-color: #03A9F3;
-  text-transform: uppercase;
-  font-weight: 700;
-  border-radius: 2px;
   &:hover,
   &:focus {
     background-color: #0286c1;
