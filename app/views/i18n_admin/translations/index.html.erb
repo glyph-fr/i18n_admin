@@ -1,66 +1,41 @@
-<div class="container-fluid main-container">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <div class="row">
-        <div class="col-md-6">
-          <h1 class="panel-title">
-            <%= t('i18n_admin.translations.title') %>
-          </h1>
-        </div>
+<div class="page-list">
+  <div class="page-list-heading">
+    <%= t('i18n_admin.translations.choose_locale') %>
+    <div class="btn-group">
+      <% @locales.each do |locale| %>
+        <%= link_to translations_path(locale: locale), class: "btn btn-primary#{ ' active' if current_locale == locale }" do %>
+          <%= locale %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+  <div class="page-list-heading">
+    <div class="flextable">
+      <div class="flextable-item flextable-primary">        
+        <%= form_tag translations_path, method: :get do %>
+          <div class="input-group filter-form">
+            <%= text_field_tag :q, params[:q], class: 'form-control', placeholder: t('i18n_admin.translations.search.submit') %>
+            <%= hidden_field_tag :locale, current_locale %>
 
-        <div class="col-md-6">
-          <div class="pull-right">
-            <h2>
-              <%= t('i18n_admin.translations.choose_locale') %>
-            </h2>
-
-            <div class="btn-group">
-              <% @locales.each do |locale| %>
-                <%= link_to translations_path(locale: locale), class: "btn btn-primary#{ ' active' if current_locale == locale }" do %>
-                  <%= locale %>
+            <span class="input-group-btn">
+              <% if params[:q].present? %>
+                <%= link_to translations_path(locale: current_locale), class: 'btn btn-icon-danger' do %>
+                  <i class="fa fa-times">
                 <% end %>
               <% end %>
-            </div>
+              <button class="btn" type="submit">
+                <i class="fa fa-search"></i>
+              </button>
+            </span>
           </div>
-        </div>
+        <% end %>
       </div>
     </div>
+  </div>
 
-    <div class="panel-heading panel-subheading">
-      <div class="row">
-        <div class="col-md-6 pagination-column">
-          <%= render partial: 'pagination', locals: { translations: @translations } %>
-        </div>
-
-        <div class="col-md-6">
-          <%= form_tag translations_path, method: :get do %>
-            <div class="input-group">
-              <span class="input-group-addon">
-                <i class="glyphicon glyphicon-search"></i>
-              </span>
-
-              <%= text_field_tag :q, params[:q], class: 'form-control' %>
-              <%= hidden_field_tag :locale, current_locale %>
-
-              <span class="input-group-btn">
-                <button class="btn btn-primary" type="submit">
-                  <%= t('i18n_admin.translations.search.submit') %>
-                </button>
-
-                <% if params[:q].present? %>
-                  <%= link_to translations_path(locale: current_locale), class: 'btn btn-danger' do %>
-                    <%= t('i18n_admin.translations.search.cancel') %>
-                  <% end %>
-                <% end %>
-              </span>
-            </div>
-          <% end %>
-        </div>
-      </div>
-    </div>
-
-    <div class="panel-body">
-      <table class="table table-bordered">
+  <div class="page-list-body">
+    <div class="table-responsive">
+      <table class=" table para-component-relation-table table-hover">
         <thead>
           <tr>
             <th width="20%"><%= t('i18n_admin.translation_set.key') %></th>
@@ -73,9 +48,9 @@
         </tbody>
       </table>
     </div>
+  </div>
 
-    <div class="panel-footer">
-      <%= render partial: 'pagination', locals: { translations: @translations } %>
-    </div>
+  <div class="page-list-footer">
+    <%= render partial: 'pagination', locals: { translations: @translations } %>
   </div>
 </div>

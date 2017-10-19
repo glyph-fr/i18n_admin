@@ -1,61 +1,64 @@
-<div class="container-fluid main-container">
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h1 class="panel-title">
-        <%= t('i18n_admin.exports.title') %>
-      </h1>
-    </div>
 
-    <div class="panel-body">
-      <div class="list-group">
-        <% I18n.available_locales.each do |locale| %>
-          <%= link_to export_path(locale: locale, format: (:xls unless I18nAdmin.async_io)), class: 'list-group-item', remote: I18nAdmin.async_io, data: { :'export-link' => true } do %>
-            <i class="glyphicon glyphicon-download"></i>
-            <%= locale %>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h1 class="panel-title">
+          <%= t('i18n_admin.exports.title') %>
+        </h1>
+      </div>
+
+      <div class="panel-body">
+        <div class="list-group">
+          <% I18n.available_locales.each do |locale| %>
+            <%= link_to export_path(locale: locale, format: (:xls unless I18nAdmin.async_io)), class: 'list-group-item', remote: I18nAdmin.async_io, data: { :'export-link' => true } do %>
+              <i class="fa fa-download"></i>
+              <%= locale %>
+            <% end %>
           <% end %>
-        <% end %>
+        </div>
       </div>
     </div>
   </div>
-
-  <hr>
-
-  <div class="panel panel-default">
-    <div class="panel-heading">
-      <h1 class="panel-title">
-        <%= t('i18n_admin.imports.title') %>
-      </h1>
-    </div>
-
-    <% if @import && @import.errors.any? %>
-      <div class="panel-heading import-errors danger">
-        <% @import.errors.each do |type, errors| %>
-          <%= render partial: "i18n_admin/imports/errors/#{ type }", locals: { errors: errors } %>
-        <% end %>
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h1 class="panel-title">
+          <%= t('i18n_admin.imports.title') %>
+        </h1>
       </div>
-    <% end %>
 
-    <div class="panel-body">
-      <%= form_tag import_path, multipart: true do %>
-        <div class="form-group">
-          <%= label_tag :file, t('i18n_admin.imports.file.label') %>
-          <%= file_field_tag :file %>
-          <p class="help-block">
-            <%= t('i18n_admin.imports.file.hint') %>
-          </p>
-        </div>
-
-        <div class="form-group">
-          <%= label_tag :locale, t('i18n_admin.imports.locale.label') %>
-          <%= select_tag :locale, options_for_select(I18n.available_locales), include_blank: true %>
-        </div>
-
-        <div class="form-actions">
-          <button type="submit" class="btn btn-primary">
-            <%= t('i18n_admin.imports.submit') %>
-          </button>
+      <% if @import && @import.errors.any? %>
+        <div class="panel-heading import-errors danger">
+          <% @import.errors.each do |type, errors| %>
+            <%= render partial: "i18n_admin/imports/errors/#{ type }", locals: { errors: errors } %>
+          <% end %>
         </div>
       <% end %>
+
+      <div class="panel-body">
+        <%= form_tag import_path, multipart: true do %>
+          <div class="form-group">
+            <%= label_tag :file, t('i18n_admin.imports.file.label') %>
+            <%= file_field_tag :file %>
+            <p class="help-block">
+              <%= t('i18n_admin.imports.file.hint') %>
+            </p>
+          </div>
+
+          <div class="form-group">
+            <%= label_tag :locale, t('i18n_admin.imports.locale.label') %>
+            <%= select_tag :locale, options_for_select(I18n.available_locales), include_blank: true %>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary btn-shadow">
+              <%= t('i18n_admin.imports.submit') %>
+            </button>
+          </div>
+        <% end %>
+      </div>
     </div>
   </div>
 </div>
